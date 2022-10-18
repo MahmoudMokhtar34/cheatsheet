@@ -91,6 +91,147 @@ void main() {
   OuterLibClass here = OuterLibClass();
   here.publicField;
   here.publicMethod();
+
+  //Operators
+// Arithmetic
+  40 + 2; // 42 40 IS LEFT OPERAND AND 2 IS RIGHT OPERAND
+  44 - 2; // 42
+  21 * 2; // 42
+  84 / 2; // 42
+  84.5 ~/ 2.0; // int value 42 (TRUNCATE DECIMALS)
+  392 % 50; // 42 REMAINDER OF DIVISION
+// Types can be implicitly converted
+  var answer = 84.0 / 2; // int 2 to double
+// Equality and Inequality
+  42 == 43; // false
+  42 != 43; // true
+// Increment and decrement
+  print(answer++); // 42, since it prints first for
+//postfix
+  print(--answer); // 42, since it decrements first
+//for prefix
+// Comparison
+  42 < 43; // true
+  42 > 43; // false
+  42 <= 43; // true
+  42 >= 43; // false
+// Compound assignment
+  answer += 1; // 43
+  answer -= 1; // 42
+  answer *= 2; // 84
+  answer /= 2; // 42
+  double newAnswer = 0.0;
+  newAnswer = ++answer; //answer will be 43 & newAnswer will be assigned 43
+  answer--; //42
+  newAnswer =
+      answer++; //42 assignment occurs first and answer will become 43 then
+// Logical
+  (41 < answer) && (answer < 43); // true
+  (41 < answer) || (answer > 43); // true
+  !(41 < answer); // false
+
+//Strings
+// Can use single or double quotes for String type
+  var firstName = 'Albert';
+  String lastName = "Einstein";
+// Embed variables in Strings with $
+  var physicist = "$firstName $lastName";
+// Albert Einstein
+// Escape sequences such as \' and \n
+// and concatenating adjacent strings
+  var quote = 'If you can\'t'
+      ' explain it simply\n'
+      "you don't understand it well enough.";
+// Concatenation with +
+  var energy = "Mass" + " times " + "c squared";
+// Preserving formatting with """
+  var model = """
+I'm not creating the universe.
+I'm creating a model of the universe,
+which may or may not be true.""";
+// Raw string with r prefix
+  var rawString = r"I'll\nbe\nback!";
+// prints I’ll\nbe\nback!
+
+//Control Flow: Conditionals
+  var animal = 'fox';
+  if (animal == 'cat' || animal == 'dog') {
+    print('Animal is a house pet.');
+  } else if (animal == 'rhino') {
+    print('That\'s a big animal.');
+  } else {
+    print('Animal is NOT a house pet.');
+  }
+//short if
+  print(animal == 'cat' ? 'animal is cat' : 'animal is not a cat');
+// switch statement used for equality comparison only not > < or >=  <=
+  Semester semester;
+  switch (month) {
+    case Month.august:
+    case Month.september:
+    case Month.october:
+    case Month.november:
+    case Month.december:
+      semester = Semester.fall;
+      break;
+    case Month.january:
+    case Month.february:
+    case Month.march:
+    case Month.april:
+    case Month.may:
+      semester = Semester.spring;
+      break;
+    case Month.june:
+    case Month.july:
+      semester = Semester.summer;
+      break;
+  }
+
+//Control Flow: While loops
+  var i = 1;
+// while, print 1 to 9
+  while (i < 10) {
+    print(i);
+    i++;
+  }
+// do while, print 1 to 9
+  i = 1;
+  do {
+    print(i);
+    ++i;
+  } while (i < 10);
+// break at 5
+  do {
+    print(i);
+    if (i == 5) {
+      break;
+    }
+    ++i;
+  } while (i < 10);
+//Control Flow: For loops
+  var sum = 0;
+// Init; condition; action for loop
+  for (var i = 1; i <= 10; i++) {
+    sum += i;
+  }
+// for-in loop for list
+  var numbers = [1, 2, 3, 4];
+  for (var number in numbers) {
+    print(number);
+  }
+// Skip over 3 with continue
+  for (var number in numbers) {
+    if (number == 3) {
+      continue;
+    }
+    print(number);
+  }
+// forEach with function argument
+  numbers.forEach(print); // 1, 2, 3, 4 on separate lines
+// forEach with anonymous function argument
+  numbers = [13, 14, 15, 16];
+  numbers.forEach((number) => print(number.toRadixString(16)));
+// d, e, f, 10
 }
 
 //static in class see line 79
@@ -124,143 +265,29 @@ class NullSafetyClass {
 }
 
 // Enumerations
-enum Month { january, february, march, april }
-
-final month = Month.april;
-/*
-//Operators
-// Arithmetic
-40 + 2; // 42
-44 - 2; // 42
-21 * 2; // 42
-84 / 2; // 42
-84.5 ~/ 2.0; // int value 42
-392 % 50; // 42
-// Types can be implicitly converted
-var answer = 84.0 / 2; // int 2 to double
-// Equality and Inequality
-42 == 43; // false
-42 != 43; // true
-// Increment and decrement
-print(answer++); // 42, since it prints first for
-//postfix
-print(--answer); // 42, since it decrements first
-//for prefix
-// Comparison
-42 < 43; // true
-42 > 43; // false
-42 <= 43; // true
-42 >= 43; // false
-// Compound assignment
-answer += 1; // 43
-answer -= 1; // 42
-answer *= 2; // 84
-answer /= 2; // 42
-// Logical
-(41 < answer) && (answer < 43); // true
-(41 < answer) || (answer > 43); // true
-!(41 < answer); // false
-Strings
-// Can use single or double quotes for String type
-var firstName = 'Albert';
-String lastName = "Einstein";
-// Embed variables in Strings with $
-var physicist = "$firstName $lastName”;
-// Albert Einstein
-// Escape sequences such as \' and \n
-// and concatenating adjacent strings
-var quote = 'If you can\'t' ' explain it simply\n'
-"you don't understand it well enough.";
-// Concatenation with +
-var energy = "Mass" + " times " + "c squared";
-// Preserving formatting with """
-var model = """
-I'm not creating the universe.
-I'm creating a model of the universe,
-which may or may not be true.""";
-// Raw string with r prefix
-var rawString =r”I'll\nbe\nback!";
-// prints I’ll\nbe\nback!
-//Control Flow: Conditionals var animal = 'fox';
-if (animal == 'cat' || animal == 'dog') {
- print('Animal is a house pet.');
-} else if (animal == 'rhino') {
- print('That\'s a big animal.');
-} else {
- print('Animal is NOT a house pet.');
+enum Month {
+  january,
+  february,
+  march,
+  april,
+  may,
+  june,
+  july,
+  august,
+  september,
+  october,
+  november,
+  december
 }
-// switch statement
+
+final month = Month.august;
+
 enum Semester { fall, spring, summer }
-Semester semester;
-switch (month) {
- case Month.august:
- case Month.september:
- case Month.october:
- case Month.november:
- case Month.december:
- semester = Semester.fall;
- break;
- case Month.january:
- case Month.february:
- case Month.march:
- case Month.april:
- case Month.may:
- semester = Semester.spring;
- break;
- case Month.june:
- case Month.july:
- semester = Semester.summer;
- break;
-}
-//Control Flow: While loops
-var i = 1;
-// while, print 1 to 9
-while (i < 10) {
- print(i);
- i++;
-}
-// do while, print 1 to 9
-i = 1;
-do {
- print(i);
- ++i;
-} while (i < 10);
-// break at 5
-do {
- print(i);
- if (i == 5) {
- break;
- }
- ++i;
-} while (i < 10);
-//Control Flow: For loops
-var sum = 0;
-// Init; condition; action for loop
-for (var i = 1; i <= 10; i++) {
- sum += i;
-}
-// for-in loop for list
-var numbers = [1, 2, 3, 4];
-for (var number in numbers) {
- print(number);
-}
-// Skip over 3 with continue
-for (var number in numbers) {
- if (number == 3) {
- continue;
- }
- print(number);
-}
-// forEach with function argument
-numbers.forEach(print); // 1, 2, 3, 4 on separate
-lines
-// forEach with anonymous function argument
-numbers = [13, 14, 15, 16];
-numbers.forEach(
- (number) => print(number.toRadixString(16));
-// d, e, f, 10
 
-}
+/*
+
+
+
   /*
 ///Variables, Data Types, & Comments
 // Use var with type inference or instead use type
