@@ -215,16 +215,20 @@ which may or may not be true.""";
     sum += i;
   }
 // for-in loop for list
-  var numbers = [1, 2, 3, 4];
+  var numbers = [1, 2, 3, 4, 5, 6, 7];
   for (var number in numbers) {
     print(number);
   }
-// Skip over 3 with continue
+// Skip 3 with continue and exit loop with break
   for (var number in numbers) {
     if (number == 3) {
       continue;
     }
-    print(number);
+    if (number == 5) {
+      break;
+    }
+
+    print(" --- $number --- ");
   }
 // forEach with function argument
   numbers.forEach(print); // 1, 2, 3, 4 on separate lines
