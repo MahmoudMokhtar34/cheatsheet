@@ -120,11 +120,15 @@ void main() {
   answer -= 1; // 42
   answer *= 2; // 84
   answer /= 2; // 42
-  double newAnswer = 0.0;
-  newAnswer = ++answer; //answer will be 43 & newAnswer will be assigned 43
-  answer--; //42
-  newAnswer =
-      answer++; //42 assignment occurs first and answer will become 43 then
+  int a = 1, b;
+// Increment
+  b = ++a; // preIncrement - Increment a before b gets its value.
+  b = a++; // postIncrement - Increment a AFTER b gets its value.
+
+//Decrement
+  b = --a; // predecrement - Decrement a before b gets its value.
+  b = a--; // postdecrement - Decrement a AFTER b gets its value.
+
 // Logical
   (41 < answer) && (answer < 43); // true
   (41 < answer) || (answer > 43); // true
@@ -235,7 +239,72 @@ which may or may not be true.""";
 // forEach with anonymous function argument
   numbers = [13, 14, 15, 16];
   numbers.forEach((number) => print(number.toRadixString(16)));
+
 // d, e, f, 10
+
+//Functions
+//Named function with required parameters
+  bool isBanana(String fruit) {
+    return fruit == 'banana';
+  }
+
+  var fruit = 'apple';
+  isBanana(fruit); // false
+
+// Optional parameters with square brackets [like a list of optional positional parameters]
+//void func([int error]){}; //null safety error either int? or set default a value or make it required
+  void fullName(String first, String last, [String title = ""]) {
+    print("$title  $first $last".trimLeft());
+  }
+
+  fullName("Ray", "Wenderlich"); // Ray Wenderlich
+  fullName("Albert", "Einstein", "Professor"); //Professor Albert Einstein
+
+// Optional named arguments with braces {like a map of named parameters}
+  bool withinTolerance(int value, {int? min, int? max}) {
+    return (min ?? 0) <= value && value <= (max ?? 10);
+  }
+
+  withinTolerance(11, max: 10, min: 1); // false
+
+// named optional with Default values & named required {like a map of named parameters with values}
+  bool withinTolerance2(int value,
+      {int min = 0, int max = 10, required int req}) {
+    return min <= value && value <= max;
+  }
+
+  withinTolerance2(5, req: 5); // true
+// Function as parameter
+  int applyTo(int value, int Function(int) myFunc) {
+    return myFunc(value);
+  }
+
+  int square(int n) {
+    return n * n;
+  }
+
+  applyTo(3, square); // 9
+
+// Arrow syntax for one line functions
+  int multiply(int a, int b) => a * b;
+  multiply(14, 3); // 42
+
+// Anonymous functions (without a name)
+// Assign anonymous function to a variable
+  var multiply2 = (int a, int b) {
+    return a * b;
+  };
+// Call a function variable
+  multiply2(14, 3); // 42
+
+// Closures
+  Function applyMultiplier(num multiplier) {
+    // Return value has access to multiplier
+    return (num value) => value * multiplier;
+  }
+
+  var triple = applyMultiplier(3);
+  triple(14.0); // 42.0
 }
 
 //static in class see line 79
@@ -267,6 +336,7 @@ class NullSafetyClass {
   NullSafetyClass.named3(
       this.uninitializedX); //named with value required for uninitializedX
 }
+// WINDOS PASS NF6HC-QH89W-F8WYV-WWXV4-WFG6P
 
 // Enumerations
 enum Month {
@@ -291,239 +361,6 @@ enum Semester { fall, spring, summer }
 /*
 
 
-
-  /*
-///Variables, Data Types, & Comments
-// Use var with type inference or instead use type
-//name directly
-var myAge = 35; // inferred int created with var
-var pi = 3.14; // inferred double created with var
-int yourAge = 27; // type name instead of var
-double e = 2.718; // type name instead of var
-// This is a comment
-print(myAge); // This is also a comment.
-/*
- And so is this.
- */
-// dynamic can have value of any type
-dynamic numberOfKittens = 0;
-// dynamic String
-//TODO uncomment 
-/*
-numberOfKittens = 'There are no kittens!';
-numberOfKittens = 0; // dynamic int
-numberOfKittens = 1.0; // dynamic double
-bool areThereKittens = true; // bool
-*/
-// Compile-time constants
-const speedOfLight = 299792458;
-// Immutables with final (run time constant)
-final planet = 'Jupiter';
-// planet = 'Mars'; // error: planet is immutable
-// Enumerations
-enum Month { january, february, march, april, may,
-june, july, august, september, october, november,
-december
-}
-final month = Month.august;
-//Null
-int age; // initialized to null
-double height;
-String err;
-// Check for null
-var error = err ?? "No error"; // No error
-// Null-check compound assignment
-//err ??= error;
-// Null-check on property access
-print(age?.isEven);
-//Operators
-// Arithmetic
-40 + 2; // 42
-44 - 2; // 42
-21 * 2; // 42
-84 / 2; // 42
-84.5 ~/ 2.0; // int value 42
-392 % 50; // 42
-// Types can be implicitly converted
-var answer = 84.0 / 2; // int 2 to double
-// Equality and Inequality
-42 == 43; // false
-42 != 43; // true
-// Increment and decrement
-print(answer++); // 42, since it prints first for
-//postfix
-print(--answer); // 42, since it decrements first
-//for prefix
-// Comparison
-42 < 43; // true
-42 > 43; // false
-42 <= 43; // true
-42 >= 43; // false
-// Compound assignment
-answer += 1; // 43
-answer -= 1; // 42
-answer *= 2; // 84
-answer /= 2; // 42
-// Logical
-(41 < answer) && (answer < 43); // true
-(41 < answer) || (answer > 43); // true
-!(41 < answer); // false
-Strings
-// Can use single or double quotes for String type
-var firstName = 'Albert';
-String lastName = "Einstein";
-// Embed variables in Strings with $
-var physicist = "$firstName $lastName”;
-// Albert Einstein
-// Escape sequences such as \' and \n
-// and concatenating adjacent strings
-var quote = 'If you can\'t' ' explain it simply\n'
-"you don't understand it well enough.";
-// Concatenation with +
-var energy = "Mass" + " times " + "c squared";
-// Preserving formatting with """
-var model = """
-I'm not creating the universe.
-I'm creating a model of the universe,
-which may or may not be true.""";
-// Raw string with r prefix
-var rawString =r”I'll\nbe\nback!";
-// prints I’ll\nbe\nback!
-//Control Flow: Conditionals var animal = 'fox';
-if (animal == 'cat' || animal == 'dog') {
- print('Animal is a house pet.');
-} else if (animal == 'rhino') {
- print('That\'s a big animal.');
-} else {
- print('Animal is NOT a house pet.');
-}
-// switch statement
-enum Semester { fall, spring, summer }
-Semester semester;
-switch (month) {
- case Month.august:
- case Month.september:
- case Month.october:
- case Month.november:
- case Month.december:
- semester = Semester.fall;
- break;
- case Month.january:
- case Month.february:
- case Month.march:
- case Month.april:
- case Month.may:
- semester = Semester.spring;
- break;
- case Month.june:
- case Month.july:
- semester = Semester.summer;
- break;
-}
-//Control Flow: While loops
-var i = 1;
-// while, print 1 to 9
-while (i < 10) {
- print(i);
- i++;
-}
-// do while, print 1 to 9
-i = 1;
-do {
- print(i);
- ++i;
-} while (i < 10);
-// break at 5
-do {
- print(i);
- if (i == 5) {
- break;
- }
- ++i;
-} while (i < 10);
-//Control Flow: For loops
-var sum = 0;
-// Init; condition; action for loop
-for (var i = 1; i <= 10; i++) {
- sum += i;
-}
-// for-in loop for list
-var numbers = [1, 2, 3, 4];
-for (var number in numbers) {
- print(number);
-}
-// Skip over 3 with continue
-for (var number in numbers) {
- if (number == 3) {
- continue;
- }
- print(number);
-}
-// forEach with function argument
-numbers.forEach(print); // 1, 2, 3, 4 on separate
-lines
-// forEach with anonymous function argument
-numbers = [13, 14, 15, 16];
-numbers.forEach(
- (number) => print(number.toRadixString(16));
-// d, e, f, 10
-
-//Functions
-// Named function
-bool isBanana(String fruit) {
- return fruit == 'banana';
-}
-var fruit = 'apple';
-isBanana(fruit); // false
-// Optional parameters with square brackets
-String fullName(String first, String last, [String
-title]) {
- return "${title == null ? "" : "$title "}$first
-$last";
-}
-fullName("Ray", "Wenderlich"); // Ray Wenderlich
-fullName("Albert", "Einstein", "Professor"); //
-Professor Albert Einstein
-// Optional named arguments with braces
-bool withinTolerance(
- int value, {int min, int max}) {
- return (min ?? 0) <= value && value <= (max ??
-10);
-}
-withinTolerance(11, max: 10, min: 1); // false
-// Default values
-bool withinTolerance(
- int value, {int min = 0, int max = 10}) {
- return min <= value && value <= max;
-}
-withinTolerance(5); // true
-// Function as parameter
-int applyTo(int value, int Function(int) op) {
- return op(value);
-}
-int square(int n) {
- return n * n;
-}
-applyTo(3, square); // 9
-// Arrow syntax for one line functions
-int multiply(int a, int b) => a * b;
-multiply(14, 3); // 42
-Anonymous Functions and
-Closures
-// Anonymous functions (without a name)
-// Assign anonymous function to a variable
-var multiply = (int a, int b) {
- return a * b;
-}
-// Call a function variable
-multiply(14, 3); // 42
-// Closures
-Function applyMultiplier(num multiplier){
- // Return value has access to multiplier
- return (num value) => value * multiplier;
-}
-var triple = applyMultiplier(3);
-triple(14.0); // 42.0
 Collections: Lists
 // Fixed-size list
 var pastries = List<String>(3);
@@ -788,4 +625,4 @@ print(dolphins); // [4 meters, 5 meters, 8 meters]
 print(snake.doIHaveMilk()); // false
 print(garfield.doIHaveMilk()); // true
 */
-*/
+
