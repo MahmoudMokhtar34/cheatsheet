@@ -56,6 +56,7 @@ void main() {
   // Null-checking
   //print(iCanBeNull.isEven); //will cause compile time error
   //if you are aware of the consequences and will handle it or assign it a value or for
+  //assertion operator(I know what I'm doing & I'm sure it will n't be null & I'm testing my code to avoid null values)
   //print(iCanBeNull!.isEven); //skips compiler null checking & will cause run time error (exception) if it is null
   print(iCanBeNull
       ?.isEven); //conditional check if null will not execute operations on it & will return null
@@ -64,6 +65,8 @@ void main() {
   print(iCanBeNull ?? "it is null"); //if it is null take the right value
   int imNotNull =
       iCanBeNull ?? 1; //another example (if it is null take the right value)
+  //same as
+  imNotNull = iCanBeNull == null ? 1 : iCanBeNull;
   print(imNotNull);
   dynamic nullDynamic;
   print(nullDynamic); //dynamic can be null
@@ -219,12 +222,12 @@ which may or may not be true.""";
     sum += i;
   }
 // for-in loop for list
-  var numbers = [1, 2, 3, 4, 5, 6, 7];
-  for (var number in numbers) {
+  var nums = [1, 2, 3, 4, 5, 6, 7];
+  for (var number in nums) {
     print(number);
   }
 // Skip 3 with continue and exit loop with break
-  for (var number in numbers) {
+  for (var number in nums) {
     if (number == 3) {
       continue;
     }
@@ -235,10 +238,10 @@ which may or may not be true.""";
     print(" --- $number --- ");
   }
 // forEach with function argument
-  numbers.forEach(print); // 1, 2, 3, 4 on separate lines
+  nums.forEach(print); // 1, 2, 3, 4 on separate lines
 // forEach with anonymous function argument
-  numbers = [13, 14, 15, 16];
-  numbers.forEach((number) => print(number.toRadixString(16)));
+  nums = [13, 14, 15, 16];
+  nums.forEach((number) => print(number.toRadixString(16)));
 
 // d, e, f, 10
 
@@ -279,6 +282,11 @@ which may or may not be true.""";
     return myFunc(value);
   }
 
+  // Function as a return type
+  int Function(int) returnFunc(int value) {
+    return (v) => value * 3;
+  }
+
   int square(int n) {
     return n * n;
   }
@@ -305,7 +313,170 @@ which may or may not be true.""";
 
   var triple = applyMultiplier(3);
   triple(14.0); // 42.0
+
+//Collections: Lists
+// Fixed-size list
+//var pastries = List<String>(3); //null safety error
+  var listOfDynamics = [];
+  final listOfDynamics2 = [];
+
+  List<int> listOfIntegers = [];
+  var listOfIntegers1 = <int>[];
+  var listOfIntegers2 = [1, 2];
+  final listOfIntegers3 = [1, 2];
+
+  final finalList = [1, 'hi']; //can't reassign but modifiable
+  //finalList = [2,'k']; //ct error
+  finalList[0] = 2; //allowed
+  finalList.add(3);
+
+  const constList = [1, 'hi']; //can't reassign and not modifiable
+  //constList = [2,'k']; //ct error
+  //constList.add(2); //exception in run time
+  //constList[0] = 2; //exception in run time
+
+  var pastries = <String>[];
+  print(" =========>> $finalList");
+// Element access by index
+  pastries.add('142');
+  pastries[0] = 'cookies';
+  // pastries[1] = 'cupcakes';
+  // pastries[2] = 'donuts';
+// Growable list
+  List<String> desserts = [];
+  desserts.add('cookies');
+// Initialize by growable list
+  desserts = ['cookies', 'cupcakes', 'pie'];
+// List properties and methods
+  desserts.length; // 3
+  desserts.first; // 'cookies'
+  desserts.last; // 'pie'
+  desserts.isEmpty; // false
+  desserts.isNotEmpty; // true
+  desserts.firstWhere((str) => str.length < 4);
+// pie
+// Collection if
+  var peanutAllergy = true;
+  var candy = [
+    'junior mints',
+    'twizzlers',
+    if (!peanutAllergy) 'reeses',
+  ];
+// Collection for
+  var numbers = [1, 2, 3];
+  var doubledNumbers = [for (var number in numbers) 2 * number];
+// [2, 4, 6]
+
+//Collections: List Operations
+// Spread Operator
+  pastries = ['cookies', 'cupcakes'];
+  desserts = ['donuts', ...pastries, ...candy];
+//copying a collection
+  var collection1 = [10, 20, 30];
+  var collection2 =
+      collection1; //assigned an new pointer to the same list and not copied
+  collection2[0] = 1; //change value for both lists
+  print(collection1);
+  print('=======');
+  print(collection2);
+  //to actually copy it
+  var collection3 = [...collection1];
+  collection3[0] = 5;
+  print('*********');
+  print(collection1);
+  print('======== ');
+  print(collection3);
+
+// Map to transform list
+  numbers = [1, 2, 3, 4];
+  //foreach used for executing something on the list items and return nothing
+  //accepts void functions only
+  numbers.forEach((number) {
+    print(number++);
+  });
+  print(numbers); //numbers stay the same
+  //map used for executing something on the list items and return a new
+  //lazy iterable (executes when needed only)
+  var squares = numbers.map((number) {
+    return number * number;
+  }); //map will not execute here because it is lazy (not needed)
+  print('========>>>>> squares $squares'); //map will be executed here(needed)
+// [1, 4, 9, 16]
+// Filter list using where
+  var evens = squares.where((square) => square.isEven); // (4, 16)
+// Reduce list to combined value
+  var amounts = [199, 299, 299, 199, 499];
+  var total = amounts.reduce((value, element) => value + element); // 1495
+
+  //Collections: Sets (contain unordered unique elements)
+// Create set of int
+  var someSet = <int>{};
+// Set type inference
+  var anotherSet = {1, 2, 3};
+  print('======> anotherSet $anotherSet');
+//access element
+  int element0 = anotherSet.elementAt(1);
+  print('==============> element0 = $element0');
+// Check for element
+  anotherSet.contains(1); // true
+  anotherSet.contains(99); // false
+// Adding and removing elements
+  someSet.add(42);
+  someSet.add(2112);
+  someSet.remove(2112);
+// Add to set from list
+  someSet.addAll([1, 2, 3, 4]);
+// Intersection
+  var intersection = someSet.intersection(anotherSet);
+// Union
+  var union = someSet.union(anotherSet);
+// difference
+  var difference = someSet.difference(anotherSet);
+
+  //Collections: Maps
+  //best use for parsing json and best type is <String , dynamic>
+// Map from key String & int values
+  var emptyMap = <String, int>{};
+// Map from String to String
+  var avengers = {
+    //mixed value types map with no types will infer <String , Object>
+    "Iron Man": "Suit",
+    "Captain America": "Shield",
+    "Thor": "Hammer",
+    'number': 1,
+  };
+  //object data type of the value
+  var value = avengers['Iron Man']; //as String or .toString() to make it string
+  //var length = value.length; //error .length can't be done on Object data type
+  //print('========================> length $length');
+  //element that don't exist
+  var notExist = avengers['batman']; //null so check for null
+  print('===========> $notExist');
+// Element access by key
+  var ironManPower = avengers["Iron Man"]; // Suit
+  avengers.containsKey("Captain America"); // true
+  //search in values only
+  avengers.containsValue("Arrows"); // false
+
+// Access all keys and values
+  avengers.keys.forEach(print); // Iron Man, Captain America, Thor
+  avengers.values.forEach(print); // Suit, Shield, Hammer
+// Loop over key-value pairs
+  avengers.forEach((key, value) => print('$key -> $value'));
+  //for loop in maps
+  for (var key in avengers.keys) {
+    print(key);
+  }
+  for (var val in avengers.values) {
+    print(val);
+  }
+  for (var entry in avengers.entries) {
+    print('${entry.key} : ${entry.value}');
+  }
 }
+
+//https://www.tutorialspoint.com/dart_programming/dart_programming_typedef.htm
+typedef fff = int Function(int);
 
 //static in class see line 79
 class StaticMembers {
@@ -338,7 +509,15 @@ class NullSafetyClass {
 }
 // WINDOS PASS NF6HC-QH89W-F8WYV-WWXV4-WFG6P
 
-// Enumerations
+// Enumerations used as descriptive constatnts especially for options
+//e.g. gender(male,female)
+enum Gender {
+  male,
+  female, //comma at the end makes it formatted into multi line
+}
+
+enum Gender2 { male, female }
+
 enum Month {
   january,
   february,
@@ -361,94 +540,9 @@ enum Semester { fall, spring, summer }
 /*
 
 
-Collections: Lists
-// Fixed-size list
-var pastries = List<String>(3);
-// Element access by index
-pastries[0] = 'cookies';
-pastries[1] = 'cupcakes';
-pastries[2] = 'donuts';
-// Growable list
-List<String> desserts = [];
-desserts.add('cookies');
-// Initialize by growable list
-var desserts = ['cookies', 'cupcakes', 'pie'];
-// List properties and methods
-desserts.length; // 3
-desserts.first; // 'cookies'
-desserts.last; // 'pie'
-desserts.isEmpty; // false
-desserts.isNotEmpty; // true
-desserts.firstWhere((str) => str.length < 4));
-// pie
-// Collection if
-var peanutAllergy = true;
-var candy = [
- 'junior mints',
- 'twizzlers',
- if (!peanutAllergy) 'reeses'
-];
-// Collection for
-var numbers = [1, 2, 3];
-var doubledNumbers =
- [for (var number in numbers) 2 * number];
-// [2, 4, 6]
-Page 2 of 4
-Dart 2 Cheat Sheet and Quick Reference
-Source: raywenderlich.com. Visit for more Flutter/Dart resources and tutorials! Version 1.0.1. Copyright 2019 Razeware LLC. All rights reserved.
-Collections: List Operations
-// Spread Operator and null-spread operator
-var pastries = ['cookies', 'cupcakes'];
-var desserts = ['donuts', ...pastries, ...?candy];
-// Map to transform list
-var numbers = [1, 2, 3, 4];
-var squares = numbers.map(
- (number) => number * number).toList();
-// [1, 4, 9, 16]
-// Filter list using where
-var evens = squares.where(
- (square) => square.isEven); // (4, 16)
-// Reduce list to combined value
-var amounts = [199, 299, 299, 199, 499];
-var total = amounts.reduce(
- (value, element) => value + element); // 1495
-Collections: Sets
-// Create set of int
-var someSet = <int>{};
-// Set type inference
-var anotherSet = {1, 2, 3, 1};
-// Check for element
-anotherSet.contains(1); // true
-anotherSet.contains(99); // false
-// Adding and removing elements
-someSet.add(42);
-someSet.add(2112);
-someSet.remove(2112);
-// Add to set from list
-someSet.addAll([1, 2, 3, 4]);
-// Intersection
-var intersection = someSet.intersection(anotherSet);
-// Union
-var union = someSet.union(anotherSet);
-Collections: Maps
-// Map from String to int
-var emptyMap = Map<String, int>();
-// Map from String to String
-var avengers = {
- "Iron Man": "Suit", "Captain America": "Shield",
- "Thor": "Hammer"};
-// Element access by key
-var ironManPower = avengers["Iron Man"]; // Suit
-avengers.containsKey("Captain America"); // true
-avengers.containsValue("Arrows"); // false
-// Access all keys and values
-avengers.keys.forEach(print); // Iron Man, Captain
-America, Thor
-avengers.values.forEach(print); // Suit, Shield,
-Hammer
-// Loop over key-value pairs
-avengers.forEach((key, value) => print('$key ->
-$value'));
+
+
+
 Classes and Objects
 class Actor {
  // Properties
@@ -625,4 +719,3 @@ print(dolphins); // [4 meters, 5 meters, 8 meters]
 print(snake.doIHaveMilk()); // false
 print(garfield.doIHaveMilk()); // true
 */
-
