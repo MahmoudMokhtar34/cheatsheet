@@ -172,9 +172,10 @@ which may or may not be true.""";
 //short if
   print(animal == 'cat' ? 'animal is cat' : 'animal is not a cat');
 // switch statement used for equality comparison only not > < or >=  <=
+//swich when used for enums will check for unused enumerators
   Semester semester;
   switch (month) {
-    case Month.august:
+    // case Month.august: //commenting it will cause a warning for missed case
     case Month.september:
     case Month.october:
     case Month.november:
@@ -278,9 +279,13 @@ which may or may not be true.""";
 
   withinTolerance2(5, req: 5); // true
 // Function as parameter
-  int applyTo(int value, int Function(int) myFunc) {
-    return myFunc(value);
+  int applyTo(int input, int Function(int) doThis) {
+    return doThis(input);
   }
+
+//use of anonymous function
+  int result = applyTo(5, (x) => x * 600000);
+  print('=============> $result');
 
   // Function as a return type
   int Function(int) returnFunc(int value) {
@@ -304,6 +309,19 @@ which may or may not be true.""";
   };
 // Call a function variable
   multiply2(14, 3); // 42
+
+//generic function (work on any data type)
+  A genericFunc<A, T>(A x, T y, A Function(A, T) applyTo) {
+    return applyTo(x, y);
+  }
+
+  var m = genericFunc(
+      'hi',
+      2,
+      (p0, p1) =>
+          p0 *
+          p1); //n.b to multiply string make the string first operand not vice versa
+  print('***********>>> $m');
 
 // Closures
   Function applyMultiplier(num multiplier) {
@@ -476,7 +494,15 @@ which may or may not be true.""";
 }
 
 //https://www.tutorialspoint.com/dart_programming/dart_programming_typedef.htm
-typedef fff = int Function(int);
+typedef IntFunction = int Function(int);
+int Function(int) func(int x) {
+  return (x) => x * 5;
+}
+
+// OR replace with the typedef name
+IntFunction func2(int x) {
+  return (x) => x * 5;
+}
 
 //static in class see line 79
 class StaticMembers {
