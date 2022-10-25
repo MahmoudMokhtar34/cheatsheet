@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:cheatsheet/myLibrary.dart';
 //Dart cheatsheet
 
@@ -175,7 +177,7 @@ which may or may not be true.""";
 //swich when used for enums will check for unused enumerators
   Semester semester;
   switch (month) {
-    // case Month.august: //commenting it will cause a warning for missed case
+    //case Month.august: //commenting it will cause a warning for missed case
     case Month.september:
     case Month.october:
     case Month.november:
@@ -563,53 +565,82 @@ final month = Month.august;
 
 enum Semester { fall, spring, summer }
 
-/*
-
-
-
-
-
-Classes and Objects
-class Actor {
- // Properties
- String name;
- var filmography = <String>[];
-
- // Short-form constructor
- Actor(this.name, this.filmography);
-
- // Named constructor
- Actor.rey({this.name = "Daisy Ridley"}) {
- filmography = ['The Force Awakens', 'Murder on
-the Orient Express'];
- }
-
- // Calling other constructors
- Actor.inTraining(String name) : this(name, []);
-
- // Constructor with initializer list
- Actor.gameOfThrones(String name)
- : this.name = name, this.filmography = ['Game
-of Thrones'] {
- print('My name is ${this.name}');
- }
-
- // Getters and Setters
- String get debut => '$name debuted in $
-{filmography.first}';
- set debut(String value) => filmography.insert(0,
-value);
-
- // Methods
- void signOnForSequel(String franchiseName) {
- filmography.add('Upcoming $franchiseName
-sequel');
- }
-
- // Override from Object
- String toString() =>
- "${[name, ...filmography].join("\n- ")}\n";
+//Classes and Objects
+class House {
+  //public field or property
+  int nrOfWalls;
+  //private field (property) (member)
+  String _wallType;
+  //static fields (belongs to the class itself & not belong to its objects)
+  static int nrOfObjectsCreated = 0;
+  //the : is used for initialization and called initializer
+  House(int nw, String wt)
+      : nrOfWalls = nw,
+        _wallType = wt {
+    nrOfObjectsCreated++; //NUMBER OF OBJECTS CREATED COUNTER
+  }
+  //named constructor
+  House.brickHouse4Walls()
+      : nrOfWalls = 4,
+        _wallType = "brick" {
+    nrOfObjectsCreated++; //NUMBER OF OBJECTS CREATED COUNTER
+  }
+  //getter for private property
+  String get wallType => _wallType;
+  //getter for private property
+  set wallType(String wt) => _wallType = wt;
+  //N.B if we used both setter an getter with no modification to the values it will be the same as public fields and will cause warning
 }
+
+//e.g. for use of static fields class for my app strings & frequently used methods
+//accessed by MyStrings.appName  ...etc like enum
+class MyStrings {
+  static String appName = "hello world";
+  static String firstPage = "Log in";
+  static String secondPage = "Notes";
+  static String logInMessage = "please log in first to show your notes";
+
+  static int multiplyBy2(int x) => x * 2;
+}
+
+class Actor {
+  // Properties
+  String name;
+  var filmography = <String>[];
+
+  // Short-form constructor
+  Actor(this.name, this.filmography);
+  Actor.namedConstructor(this.name);
+
+  // Named constructor
+  Actor.rey({this.name = "Daisy Ridley"}) {
+    filmography = ['The Force Awakens', 'Murder on the Orient Express'];
+  }
+
+  // Calling other constructors
+  Actor.inTraining(String name) : this(name, []);
+
+  // Constructor with initializer list
+  Actor.gameOfThrones(String name)
+      : this.name = name,
+        this.filmography = ['Game of Thrones'] {
+    print('My name is ${this.name}');
+  }
+
+  // Getters and Setters
+  String get debut => '$name debuted in ${filmography.first}';
+  set debut(String value) => filmography.insert(0, value);
+
+  // Methods
+  void signOnForSequel(String franchiseName) {
+    filmography.add('Upcoming $franchiseName sequel');
+  }
+
+  // Override from Object
+  String toString() => "${[name, ...filmography].join("\n- ")}\n";
+}
+
+/*
 var gotgStar = Actor('Zoe Saldana', []);
 gotgStar.name = 'Zoe Saldana';
 gotgStar.filmography.add('Guardians of the Galaxy');
@@ -617,6 +648,7 @@ gotgStar.debut = 'Center Stage';
 print(Actor.rey().debut); // The Force Awakens
 var kit = Actor.gameOfThrones('Kit Harington');
 var star = Actor.inTraining('Super Star');
+
 // Cascade syntax ..
 gotgStar // Get an object
  ..name = 'Zoe' // Use property
