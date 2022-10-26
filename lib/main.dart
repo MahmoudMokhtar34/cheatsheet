@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:cheatsheet/myLibrary.dart';
 //Dart cheatsheet
 
@@ -177,7 +175,7 @@ which may or may not be true.""";
 //swich when used for enums will check for unused enumerators
   Semester semester;
   switch (month) {
-    //case Month.august: //commenting it will cause a warning for missed case
+    case Month.august: //commenting it will cause a warning for missed case
     case Month.september:
     case Month.october:
     case Month.november:
@@ -326,6 +324,7 @@ which may or may not be true.""";
   print('***********>>> $m');
 
 // Closures
+//TODO closures
   Function applyMultiplier(num multiplier) {
     // Return value has access to multiplier
     return (num value) => value * multiplier;
@@ -572,24 +571,44 @@ class House {
   //private field (property) (member)
   String _wallType;
   //static fields (belongs to the class itself & not belong to its objects)
+  //called using the class name only & not accessible by its objects
   static int nrOfObjectsCreated = 0;
   //the : is used for initialization and called initializer
+  // i.e Constructor with initializer list
   House(int nw, String wt)
-      : nrOfWalls = nw,
+      : nrOfWalls = nw, //initializer list start
         _wallType = wt {
+    //constructor body start
     nrOfObjectsCreated++; //NUMBER OF OBJECTS CREATED COUNTER
   }
+
   //named constructor
   House.brickHouse4Walls()
       : nrOfWalls = 4,
         _wallType = "brick" {
     nrOfObjectsCreated++; //NUMBER OF OBJECTS CREATED COUNTER
   }
+  //short form constructor
+  House.shortConstructor(this._wallType, this.nrOfWalls) {
+    nrOfObjectsCreated++;
+  }
+  //calling the main constructor within another named one
+  House.caller() : this(10, 'wood');
+  //calling another named constructor in another named one
+  House.anotherCaller() : this.brickHouse4Walls();
+
   //getter for private property
   String get wallType => _wallType;
-  //getter for private property
-  set wallType(String wt) => _wallType = wt;
-  //N.B if we used both setter an getter with no modification to the values it will be the same as public fields and will cause warning
+  //setter for private property
+  //N.B if we used both setter an getter with no modification to the bodies
+  //or name of methods it will be the same as public fields and will cause warning
+  //set wallType(String wt) => _wallType = wt; //cause warning
+  set typeOfWall(String wt) => _wallType = wt; //different name
+  set wallType(String wt) => _wallType = "type is $wt"; //modification in  body
+
+  // Override from Object (Object is the parent of all classes and types)
+  @override
+  String toString() => "nr of walls $nrOfWalls of $_wallType";
 }
 
 //e.g. for use of static fields class for my app strings & frequently used methods
@@ -603,117 +622,76 @@ class MyStrings {
   static int multiplyBy2(int x) => x * 2;
 }
 
-class Actor {
-  // Properties
+//another concepts for Static Class Members
+//using enums as values for the class field
+enum PhysicistType { theoretical, experimental, both }
+
+class Physicist {
   String name;
-  var filmography = <String>[];
-
-  // Short-form constructor
-  Actor(this.name, this.filmography);
-  Actor.namedConstructor(this.name);
-
-  // Named constructor
-  Actor.rey({this.name = "Daisy Ridley"}) {
-    filmography = ['The Force Awakens', 'Murder on the Orient Express'];
+  PhysicistType type; //type of this field is an enum of type PhysicistType
+  // Internal constructor
+  Physicist._internal(this.name, this.type);
+  // Static property
+  static var physicistCount = 0;
+  // Static method that return object from the class using the private constructor
+  static Physicist newPhysicist(String name, PhysicistType type) {
+    physicistCount++;
+    return Physicist._internal(name, type);
   }
-
-  // Calling other constructors
-  Actor.inTraining(String name) : this(name, []);
-
-  // Constructor with initializer list
-  Actor.gameOfThrones(String name)
-      : this.name = name,
-        this.filmography = ['Game of Thrones'] {
-    print('My name is ${this.name}');
-  }
-
-  // Getters and Setters
-  String get debut => '$name debuted in ${filmography.first}';
-  set debut(String value) => filmography.insert(0, value);
-
-  // Methods
-  void signOnForSequel(String franchiseName) {
-    filmography.add('Upcoming $franchiseName sequel');
-  }
-
-  // Override from Object
-  String toString() => "${[name, ...filmography].join("\n- ")}\n";
 }
 
-/*
-var gotgStar = Actor('Zoe Saldana', []);
-gotgStar.name = 'Zoe Saldana';
-gotgStar.filmography.add('Guardians of the Galaxy');
-gotgStar.debut = 'Center Stage';
-print(Actor.rey().debut); // The Force Awakens
-var kit = Actor.gameOfThrones('Kit Harington');
-var star = Actor.inTraining('Super Star');
+final emmy = Physicist.newPhysicist("Emmy Noether", PhysicistType.theoretical);
+final lise = Physicist.newPhysicist("Lise Meitner", PhysicistType.experimental);
+//print(Physicist.physicistCount); // 2 used in main
 
-// Cascade syntax ..
+//Class Inheritance
+// Base aka parent class
+class Person {
+  // Parent properties inherited by child
+  String firstName;
+  String lastName;
+  // Parent class constructor
+  Person(this.firstName, this.lastName);
+  // Parent class method
+  String get fullName => '$firstName $lastName';
+  // Optional @override annotation
+  // All class hierarchies and types have Object as root class
+  @override
+  String toString() => fullName;
+}
+
+// Subclass aka child class
+class Student extends Person {
+  // Properties specific to child
+  var grades = <String>[];
+  // Call super on parent constructor (initializing the super class required fields)
+  Student(String firstName, String lastName) : super(firstName, lastName);
+  // Optional override annotation on parent method
+//override (reverse order (last name first))
+  @override
+  String get fullName => '$lastName, $firstName';
+}
+
+//implementation
+final jon = Person('Jon', 'Snow');
+final jane = Student('Jane', 'Snow'); // Calls parent constructor
+//print(jon); // Jon Snow //uses the overridden toString method
+// Use of toString in parent, which in turn uses the child class overridden fullName getter method
+//print(jane); // Snow, Jane
+
+/*
+//TODO Cascade syntax ..
 gotgStar // Get an object
  ..name = 'Zoe' // Use property
  ..signOnForSequel('Star Trek'); // Call method
-Static Class Members
-enum PhysicistType { theoretical, experimental, both
-}
-class Physicist {
- String name;
- PhysicistType type;
- // Internal constructor
- Physicist._internal(this.name, this.type);
- // Static property
- static var physicistCount = 0;
- // Static method
- static Physicist newPhysicist(
- String name,
- PhysicistType type) {
- physicistCount++;
- return Physicist._internal(name, type);
- }
-}
-final emmy = Physicist.newPhysicist(
- "Emmy Noether", PhysicistType.theoretical);
-final lise = Physicist.newPhysicist(
- "Lise Meitner", PhysicistType.experimental);
-print(Physicist.physicistCount); // 2
+
+*/
+
+/*
 Page 3 of 4
 Dart 2 Cheat Sheet and Quick Reference
 Source: raywenderlich.com. Visit for more Flutter/Dart resources and tutorials! Version 1.0.1. Copyright 2019 Razeware LLC. All rights reserved.
-Class Inheritance
-// Base aka parent class
-class Person {
- // Parent properties inherited by child
- String firstName;
- String lastName;
- // Parent class constructor
- Person(this.firstName, this.lastName);
- // Parent class method
- String get fullName => '$firstName $lastName';
- // Optional @override annotation
- // All class hierarchies and types have Object as
-root class
- @override
- String toString() => fullName;
-}
-// Subclass aka child class
-class Student extends Person {
- // Properties specific to child
- var grades = <String>[];
- // Call super on parent constructor
- Student(String firstName, String lastName)
- : super(firstName, lastName);
- // Optional override annotation on parent method
-override
- @override
- String get fullName => '$lastName, $firstName';
-}
-final jon = Person('Jon', 'Snow');
-final jane = Student('Jane', 'Snow'); // Calls
-parent constructor
-print(jon); // Jon Snow
-// Use toString in parent, in turn using subclass
-override of fullName
-print(jane); // Snow, Jane
+
 Abstract Classes, Interfaces, Mixins
 enum BloodType { warm, cold }
 abstract class Animal {
