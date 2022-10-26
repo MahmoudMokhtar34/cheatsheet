@@ -650,10 +650,17 @@ class Person {
   // Parent properties inherited by child
   String firstName;
   String lastName;
+  double totalGrade = 100.0;
   // Parent class constructor
   Person(this.firstName, this.lastName);
-  // Parent class method
+  Person.named(this.firstName) : lastName = '';
+
+  // Parent class methods
   String get fullName => '$firstName $lastName';
+  double calcPercent({double? grade}) {
+    return grade ?? 0 / totalGrade * 100;
+  }
+
   // Optional @override annotation
   // All class hierarchies and types have Object as root class
   @override
@@ -663,9 +670,22 @@ class Person {
 // Subclass aka child class
 class Student extends Person {
   // Properties specific to child
-  var grades = <String>[];
-  // Call super on parent constructor (initializing the super class required fields)
-  Student(String firstName, String lastName) : super(firstName, lastName);
+  // Call super (parent) class constructor(default or main)
+  //i.e (initializing the parent class & this child class required fields
+  double myGrade;
+  double myPenalty;
+
+  Student(String firstName, String lastName, double grade, double penalty)
+      : myGrade = grade,
+        myPenalty = penalty,
+        super.named(firstName);
+//override method with or without calling the super overridden method
+  @override
+  double calcPercent({double? grade}) {
+    return super.calcPercent(grade: grade ?? myGrade - myPenalty);
+    //return (grade?? myGrade - myPenalty)/totalGrade*100;
+  }
+
   // Optional override annotation on parent method
 //override (reverse order (last name first))
   @override
@@ -674,9 +694,12 @@ class Student extends Person {
 
 //implementation
 final jon = Person('Jon', 'Snow');
-final jane = Student('Jane', 'Snow'); // Calls parent constructor
-//print(jon); // Jon Snow //uses the overridden toString method
-// Use of toString in parent, which in turn uses the child class overridden fullName getter method
+final jane = Student('Jane', 'Snow', 90.0,
+    10.0) // Calls the child constructor which initializes the parent one
+  ..calcPercent(); //calls the overriding method which calls the overridden one
+// .. is cascade operator (doing multiple operations sequentially on an object)
+//print(jon); // Jon Snow //uses the overriding toString method
+// Use of toString in parent, which in turn uses the child class fullName getter method which overrides the parent one
 //print(jane); // Snow, Jane
 
 /*
