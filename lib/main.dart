@@ -492,6 +492,12 @@ which may or may not be true.""";
   for (var entry in avengers.entries) {
     print('${entry.key} : ${entry.value}');
   }
+
+//TODO Implementation area
+//   Two two = Two()
+//     ..concMethod()
+//     ..absMethod();
+//
 }
 
 //https://www.tutorialspoint.com/dart_programming/dart_programming_typedef.htm
@@ -710,64 +716,175 @@ gotgStar // Get an object
 
 */
 
-/*
-Page 3 of 4
-Dart 2 Cheat Sheet and Quick Reference
-Source: raywenderlich.com. Visit for more Flutter/Dart resources and tutorials! Version 1.0.1. Copyright 2019 Razeware LLC. All rights reserved.
+//TODO abstract vs late fields (can late cause runtime error and become null in
+//abstract and interfaces and classes how to avoid this)
+/*in abstract classes
+abstract fields : forces override in the child or the implementing class so avoid
+   being null
+late fields : doesn't
+N.B. implement forces override of all members even late and concrete ones
+*/
 
-Abstract Classes, Interfaces, Mixins
+//Abstract Classes, Interfaces, Mixins
+
+/*
+classes (concrete) => doesn't allow abstract fields or methods (w objects)
+Abstract classes => permits 0 or more abstract fields and methods (no objects)
+Interfaces =>  Dart does not have a syntax for declaring interfaces.
+    concrete and abstract Classes themselves can be used as interfaces in Dart 
+    by just using implements keyWord.and u must override every member in the
+    implemented (interface) even if it was concrete
+*/
+
+/*
+extends : accepts only one concrete or abstract class and forces implementation 
+    for abstract members only 
+implements: accepts one or more concrete or abstract class and forces overriding
+     all members even concrete ones (treating it as if it was an interface)
+     and doesn't require implemented class constructor to be initialized
+     i.e. as implement implies it extracts and utilize its content of methods 
+     and fields without using the class it self
+
+
+*/
+abstract class AbsClass {
+  abstract int absVar; //abstract field (makes abstract setter & getter methods)
+  late int lateVar; //late field to avoid null safety error
+  int concVar = 0; //normal initialized field
+  AbsClass({required this.concVar});
+  int absClassConcMethod() => 1; //concrete method
+  int absClassAbsMethod(); //abstract method
+}
+
+class ConcClass {
+  int myVar;
+  ConcClass({required this.myVar});
+  int myMethod() => 0;
+  //int absMethod(); //error abstract methods not allowed in concrete classes
+}
+
+//extending abstract classes forces overriding abstract members only
+class InheritAbsClass extends AbsClass {
+  @override
+  int absVar = 0;
+
+  InheritAbsClass({required super.concVar});
+
+  @override
+  int absClassAbsMethod() => 0;
+}
+
+//implements forces overriding all members (treating it as interface)
+class ImplementAbsClass implements AbsClass {
+  //implemented class constructor is not required
+  @override
+  int absVar = 0;
+
+  @override
+  int lateVar = 0;
+
+  @override
+  int concVar = 0;
+
+  @override
+  int absClassAbsMethod() => 0;
+
+  @override
+  int absClassConcMethod() => 0;
+}
+
+//same for implemented concrete classes
+class ImplementConcClass implements ConcClass {
+  @override
+  int myVar = 0;
+
+  @override
+  int myMethod() => 0;
+}
+
+//implementation of multiple classes and make it abstract
+abstract class MultiImplementation implements ConcClass, AbsClass {
+//no override required here but all members(of both classes) will be required in
+// the classes that inherit or implement this one
+}
+
+//inherit concrete class & implementing abstract one and make it abstract
+abstract class InhConcImpAbs extends ConcClass implements AbsClass {
+  InhConcImpAbs({required super.myVar});
+//no override required here but overriding all members (of the implemented class
+// only) will be required in the classes that inherit or implement this one
+}
+
+//e.g.
+//class Imp extends MultiImplementation{} / require override all
+//class InhImp extends InhConcImpAbs{} //require override AbsClass members only
+
 enum BloodType { warm, cold }
+
 abstract class Animal {
- BloodType bloodType; // Base class property
- void goSwimming(); // Abstract method without
-implementation
+  abstract BloodType bloodType; // Base class property
+  void goSwimming(); // Abstract method without implementation
 }
+
 mixin Milk {
- bool hasMilk;
- bool doIHaveMilk() => hasMilk;
+  late bool hasMilk;
+  bool doIHaveMilk() => hasMilk;
 }
+
 // Concrete class inheriting from abstract class
 class Cat extends Animal with Milk {
- BloodType bloodType = BloodType.warm; // Set value
-for property
- Cat() { hasMilk = true; } // Set mixin property
- // Concrete subclass must implement abstract
-methods
- @override
- void goSwimming() { print("No thanks!"); }
+  @override
+  BloodType bloodType = BloodType.warm; // Set value for property
+  Cat() {
+    hasMilk = true;
+  } // Set mixin property
+  // Concrete subclass must implement abstract methods
+  @override
+  void goSwimming() {
+    print("No thanks!");
+  }
 }
-// Concrete class that also implements Comparable
-interface
-class Dolphin extends Animal implements
-Comparable<Dolphin> {
- BloodType bloodType = BloodType.warm;
- double length; // Concrete sublcass property
- Dolphin(this.length); // Concrete subclass
-constructor
- // Concrete subclass must implement abstract
-methods
- @override
- void goSwimming() { print("Click! Click!"); }
- // Also must implement interface methods
- @override
- int compareTo(other) =>
-length.compareTo(other.length);
- @override
- String toString() => '$length meters';
+
+// Concrete class that also implements Comparable interface
+class Dolphin extends Animal implements Comparable<Dolphin> {
+  @override
+  BloodType bloodType = BloodType.warm;
+  double length; // Concrete subclass property
+  Dolphin(this.length); // Concrete subclass constructor
+  // Concrete subclass must implement abstract methods
+  @override
+  void goSwimming() {
+    print("Click! Click!");
+  }
+
+  // Also must implement interface methods
+  @override
+  int compareTo(other) => length.compareTo(other.length);
+  @override
+  String toString() => '$length meters';
 }
+
 class Reptile extends Animal with Milk {
- BloodType bloodType = BloodType.cold;
- Reptile() { hasMilk = false; }
- @override
- void goSwimming() { print("Sure!"); }
+  @override
+  BloodType bloodType = BloodType.cold;
+  Reptile() {
+    hasMilk = false;
+  }
+  @override
+  void goSwimming() {
+    print("Sure!");
+  }
 }
-// var snake = Animal(); // error: can't instantiate
-abstract class
+
+// var snake = Animal(); // error: can't instantiate abstract class
 // Can instantiate concrete classes
 var garfield = Cat();
 var flipper = Dolphin(4.0);
 var snake = Reptile();
-// Call concrete methods
+
+//TODO Implementation
+/*
+//Call concrete methods
 flipper.goSwimming(); // Click! Click!
 garfield.goSwimming(); // No thanks!
 // Use interface implementation
@@ -777,4 +894,11 @@ dolphins.sort();
 print(dolphins); // [4 meters, 5 meters, 8 meters]
 print(snake.doIHaveMilk()); // false
 print(garfield.doIHaveMilk()); // true
+
 */
+/**
+ * 
+ * 
+ * 
+ * 
+ */
