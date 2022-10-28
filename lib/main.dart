@@ -497,7 +497,12 @@ which may or may not be true.""";
 //   Two two = Two()
 //     ..concMethod()
 //     ..absMethod();
-//
+//TODO move to method def to main to test _ _
+  functionA(1, 'abc', (a, b) {});
+  callMeAndAnotherThing(a, () {
+    print('=====******======');
+    print("$a");
+  });
 }
 
 //https://www.tutorialspoint.com/dart_programming/dart_programming_typedef.htm
@@ -728,12 +733,14 @@ N.B. implement forces override of all members even late and concrete ones
 //Abstract Classes, Interfaces, Mixins
 
 /*
-classes (concrete) => doesn't allow abstract fields or methods (w objects)
-Abstract classes => permits 0 or more abstract fields and methods (no objects)
+classes (concrete) => doesn't allow abstract fields or methods and can make 
+    objects (instances) of them 
+Abstract classes => permits 0 or more abstract fields and methods and can,t make 
+    objects from it.
 Interfaces =>  Dart does not have a syntax for declaring interfaces.
     concrete and abstract Classes themselves can be used as interfaces in Dart 
     by just using implements keyWord.and u must override every member in the
-    implemented (interface) even if it was concrete
+    implemented "interface" even if it was concrete
 */
 
 /*
@@ -742,16 +749,15 @@ extends : accepts only one concrete or abstract class and forces implementation
 implements: accepts one or more concrete or abstract class and forces overriding
      all members even concrete ones (treating it as if it was an interface)
      and doesn't require implemented class constructor to be initialized
-     i.e. as implement implies it extracts and utilize its content of methods 
-     and fields without using the class it self
-
-
+     i.e. as implements keyword implies it extracts and utilize its content of 
+     methods and fields without using the class it self
 */
 abstract class AbsClass {
   abstract int absVar; //abstract field (makes abstract setter & getter methods)
-  late int lateVar; //late field to avoid null safety error
+  late int lateVar; //late field to avoid null safety error (can cause null
+  //values in case of inheritance)
   int concVar = 0; //normal initialized field
-  AbsClass({required this.concVar});
+  AbsClass({required this.concVar}); //constructor
   int absClassConcMethod() => 1; //concrete method
   int absClassAbsMethod(); //abstract method
 }
@@ -896,9 +902,34 @@ print(snake.doIHaveMilk()); // false
 print(garfield.doIHaveMilk()); // true
 
 */
-/**
- * 
- * 
- * 
- * 
+
+class X {
+  int z;
+
+  int get ze => z;
+
+  set ze(int z) => z = z;
+
+  X(int a) : this.z = a;
+}
+
+//TODO callback function and _ replacement
+/*Callback: is basically a function or a method that we pass as an argument into
+    another function or a method to perform an action
+    i.e. we make a function A that accepts a function B as one of its parameters
+    to be executed when A is called.
+    and the function B that we pass as an argument when we call A is the 
+    callback function that will be executed during A execution
  */
+void functionA(
+    int x, String abc, void Function(int, String) callbackFunctionB) {
+  x++; //this is what A function do
+  //TODO closure: is it taking that x var to the outside using this B method?
+  callbackFunctionB(
+      x, abc); //this is what you will make function A do for you using B
+}
+
+void callMeAndAnotherThing(int a, void Function() doAnotherThing) {
+  a++;
+  doAnotherThing();
+}
