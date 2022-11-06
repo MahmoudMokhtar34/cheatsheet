@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cheatsheet/myLibrary.dart';
 //Dart cheatsheet
 
@@ -253,7 +255,10 @@ which may or may not be true.""";
   }
 
   var fruit = 'apple';
+  //this is calling the function (execution)
+  //and the passed values or variables are called arguments
   isBanana(fruit); // false
+  isBanana('banana');
 
 // Optional parameters with square brackets [like a list of optional positional parameters]
 //void func([int error]){}; //null safety error either int? or set default a value or make it required
@@ -264,7 +269,7 @@ which may or may not be true.""";
   fullName("Ray", "Wenderlich"); // Ray Wenderlich
   fullName("Albert", "Einstein", "Professor"); //Professor Albert Einstein
 
-// Optional named arguments with braces {like a map of named parameters}
+// Optional named parameters with braces {like a map of named parameters}
   bool withinTolerance(int value, {int? min, int? max}) {
     return (min ?? 0) <= value && value <= (max ?? 10);
   }
@@ -493,16 +498,161 @@ which may or may not be true.""";
     print('${entry.key} : ${entry.value}');
   }
 
+//TODO callback function and _ replacement
+/*Callback: is basically a function or a method that we pass as an argument into
+    another function or a method to perform an action
+    i.e. we make a function A that accepts a function B as one of its parameters
+    to be executed when A is called.
+    and the function B that we pass as an argument when we call A is the 
+    callback function that will be executed during A execution
+
+    N.B. if the call back method require parameters it should be provided in the
+    parameters of the calling function A
+
+    N.B when you call the A function you will provide the definition for 
+      the B method and what it will do (you are not calling (executing) it in 
+      the argument section you are just defining it) so that the calling of B 
+      (execution) step occur while A executes as A definition determines.
+    
+    N>B you can add a function call that accepts parameters  to be executed 
+      within the body of the callback function B
+ */
+  void functionA(
+    int i, //parameter to be used in function A
+    int x, //parameter to be used in function B
+    String abc, //parameter to be used in function B
+    void Function(int, String) callbackFunctionB,
+  ) {
+    i++; //this is what A function do
+    //this is what you will make function A do for you using B
+    callbackFunctionB(x, abc);
+  }
+
+  void callMeAndAnotherThing(int a, void Function() doAnotherThing) {
+    a++;
+    doAnotherThing();
+  }
+
 //TODO Implementation area
+//Cascade operator
 //   Two two = Two()
 //     ..concMethod()
 //     ..absMethod();
-//TODO move to method def to main to test _ _
-  functionA(1, 'abc', (a, b) {});
-  callMeAndAnotherThing(a, () {
-    print('=====******======');
-    print("$a");
+//TODO move to method def to main to test __ _
+//using a call back function and providing the function definition for it
+  functionA(0, 1, 'abc',
+      //callback function definition
+      //n & m are call back func parameters(int n, String m)
+      //(not arguments (values))
+      (n, m) {
+    //and this is the callback function body
+    //(definition) not its call (execution)
+    n++;
+    m += ' hi';
+    print(r"///////////*********\\\\\\\\\");
+    print('$n + $m');
+    //you can add other functions here to be executed also
   });
+//using _ for unused parameter in call back functions
+//1st parameter use _ 2nd __ 3rd ___ etc...
+  functionA(1, 2, 'abc', (_, __) {
+    print('no parameters used here');
+  });
+
+//closures applied
+  // Create a function that adds 2.
+  var add2 = makeAdder(2);
+
+  // Create a function that adds 4.
+  var add4 = makeAdder(4);
+
+  assert(add2(3) == 5);
+  assert(add4(3) == 7);
+
+  //callable class
+  var caller = Callable(0);
+  caller
+    ..xPlus1()
+    ..xPlus1();
+  //calling the object as a function executes the call function in its class
+  print('-------- ${caller(5)} ---------');
+
+//scope for duplicate identifier name in nested function parameters
+//explains different context (parameter identifier) scope in flutter widgets
+//i.e context when used in methods and constructors inside flutter widgets
+//parameters it is used just as as an identifier for the parameters not as
+// a context value
+  void func1({int i = 1}) {
+    // i is the identifier for func1
+    i = 2; // //changes value of i in func1
+    void func2({int i = 13}) {
+      //i became the identifier for func 2 inside it only
+      i = 15; //changes value of i in func2 only
+      print(i); //prints value of i in func2 only
+    }
+
+    i = 3; //changes value of i in func1 only
+    func2(); //call func2
+    print(i); //prints value of i in func1
+  }
+
+  func1(); //15 , 13 (i func2 ,i func1)
+
+  var list = [1, 2, 3];
+  void plusOne(int i) => ++i;
+  List list2 = list.map(plusOne).toList();
+  print("@@@@@@@@@@@@@@ $list2");
+
+  //Callable class calling in 3 different ways
+  Callable(0)(2); //1
+  var callObject = Callable(1);
+  callObject.call(2); //2
+  callObject(3); //3
+}
+
+//closures
+/// Returns a function that adds [addBy] to the
+/// function's argument.
+
+Function makeAdder(int addBy) {
+  return (int i) => addBy + i;
+}
+
+Function makeMultiplier(int multiBy) {
+  return (int x) {
+    return x * multiBy;
+  };
+}
+
+//TODO closure: a function object that has access to variables in its lexical
+//scope, even when the function is used outside of its original scope.
+Function returnClosure() {
+  //variable that can't be accessed outside here (it should be destroyed after
+  //finishing this outer function and can't be used from outside here)
+  String innerVar = "inner variable value";
+  //function that holds reference to the innerVar
+  String getInnerVar() {
+    return innerVar;
+  }
+
+  //return the function (closure) that holds access (closes over them) to the
+  // inner variables and uses them outside their original scope
+  return getInnerVar;
+}
+
+//callable class using call method (keyword)
+//functions also have a default call method in it funName() same as
+//funName.call()
+class Callable {
+  int x;
+  Callable(this.x);
+  int xPlus1() => x++;
+  call(int y) {
+    //called function when we use the object as a function "objectName()"
+    // or className()()  i.e constructor
+    print('========  ${x * y}  ===========');
+    return x;
+  }
 }
 
 //https://www.tutorialspoint.com/dart_programming/dart_programming_typedef.htm
@@ -911,25 +1061,4 @@ class X {
   set ze(int z) => z = z;
 
   X(int a) : this.z = a;
-}
-
-//TODO callback function and _ replacement
-/*Callback: is basically a function or a method that we pass as an argument into
-    another function or a method to perform an action
-    i.e. we make a function A that accepts a function B as one of its parameters
-    to be executed when A is called.
-    and the function B that we pass as an argument when we call A is the 
-    callback function that will be executed during A execution
- */
-void functionA(
-    int x, String abc, void Function(int, String) callbackFunctionB) {
-  x++; //this is what A function do
-  //TODO closure: is it taking that x var to the outside using this B method?
-  callbackFunctionB(
-      x, abc); //this is what you will make function A do for you using B
-}
-
-void callMeAndAnotherThing(int a, void Function() doAnotherThing) {
-  a++;
-  doAnotherThing();
 }
