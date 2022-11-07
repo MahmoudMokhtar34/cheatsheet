@@ -975,6 +975,11 @@ abstract class InhConcImpAbs extends ConcClass implements AbsClass {
 //class Imp extends MultiImplementation{} / require override all
 //class InhImp extends InhConcImpAbs{} //require override AbsClass members only
 
+//TODO oveeriding the Object class toString method and Operator == and any
+//other operator
+
+//TODO composition and its relation to fluter
+//TODO factory constructors
 enum BloodType { warm, cold }
 
 abstract class Animal {
