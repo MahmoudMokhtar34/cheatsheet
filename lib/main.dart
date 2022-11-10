@@ -979,7 +979,14 @@ abstract class InhConcImpAbs extends ConcClass implements AbsClass {
 //other operator
 
 //TODO composition and its relation to fluter
-//TODO factory constructors
+//TODO factory constructors :
+//return an istance of the class or of child class(sub class)
+//TODO const constructor inhance performance and hve the same hash code
+//TODO polymorphism (overriding method)
+//TODO  encapsulation private fields ==> _varName
+//TODO, generics, copyWith() method, exceptions
+//TODO ternary ooperator ? : ;(i.e if else short syntax)
+
 enum BloodType { warm, cold }
 
 abstract class Animal {
