@@ -980,13 +980,35 @@ abstract class InhConcImpAbs extends ConcClass implements AbsClass {
 
 //TODO composition and its relation to fluter
 //TODO factory constructors :
-//return an istance of the class or of child class(sub class)
+//return an instance of the class or of child class(sub class)
+//implement a body that can,t be done in the normal constructor body
 //TODO const constructor inhance performance and hve the same hash code
 //TODO polymorphism (overriding method)
 //TODO  encapsulation private fields ==> _varName
 //TODO, generics, copyWith() method, exceptions
 //TODO ternary ooperator ? : ;(i.e if else short syntax)
+//TODO Singelton
+//Singleton using dart factory
+class Singleton {
+  // static variable
+  static final Singleton _instance = Singleton._internal();
 
+// factory constructor
+  factory Singleton() {
+    return _instance;
+  }
+  // private constructor
+  Singleton._internal();
+}
+
+/*
+void main() {
+ Singleton obj1 = Singleton();
+ Singleton obj2 = Singleton();
+ print(obj1.hashCode);
+ print(obj2.hashCode);
+}
+ */
 enum BloodType { warm, cold }
 
 abstract class Animal {
