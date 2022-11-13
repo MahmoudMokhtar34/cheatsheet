@@ -975,7 +975,28 @@ abstract class InhConcImpAbs extends ConcClass implements AbsClass {
 //class Imp extends MultiImplementation{} / require override all
 //class InhImp extends InhConcImpAbs{} //require override AbsClass members only
 
-//TODO oveeriding the Object class toString method and Operator == and any
+//TODO future async await
+// (عملية شوي الفراخ في المطعم بتاخد وقت ومش معقول اني اوقف الدنيا لغاية ما الفرخة تخلص)
+//Asynchronous function is a function that don't stop execution of the rest of
+// the code so we can work while it executes its code and it gives us
+//a Future result
+// ( المطعم لازم يديني وصل او وعد مستقبلي مكتوب فيه فرخة لغاية ما الفرخة تجهز ويسلمني فرخة بجد او يقولي خلصت طلبك وبعته مكان ما طلبت)
+//a Future is a promise of delivering a result from an asynchronous function
+//async function must return Future<dataType> or void
+// ( لازم استنى لما تجهز واستلم الفرخة نفسها او يقولي اسف فرختك اتحرقت)
+//await is used to make code wait to receive the Future completed results of
+//async functions or error (async task not done)
+// ( لو استعجلت ومش عايز استنى ==> طاب خليك مستني مش هتاخد فراخ ومعنديش الا وصلات طول ما انت واقف ومعطلني ومعطل نفسك)
+//من غير ما تستنى مفيش فرخة
+//if we omit it we will receive the Future<resultType> only and
+//not the result it self
+//لو انا محتاج فرخة وهتاخد وقت لازم اخليها عملية جانبية واكمل اللي ورايا لغاية ما الفرخة تجهز
+//await works only within async functions
+
+//اب وعنده اولاد وبيطلبوا اكل وواحد محتاج فرخة والفرخة بتاخد وقت في المطعم اللي بيدي وصل لغاية ما الفرخة تجهز
+//وهيدي باقي الاولاد طلباتهم وده هينتظر وهيبقى معاه وصل  لغاية ما الفرخة تجهز
+
+//TODO overriding the Object class toString method and Operator == and any
 //other operator
 
 //TODO composition and its relation to fluter
@@ -988,6 +1009,8 @@ abstract class InhConcImpAbs extends ConcClass implements AbsClass {
 //TODO, generics, copyWith() method, exceptions
 //TODO ternary ooperator ? : ;(i.e if else short syntax)
 //TODO Singelton
+//TODO streams https://www.youtube.com/watch?v=53jIxLiCv2E
+//TODO learn Git https://www.youtube.com/watch?v=8JJ101D3knE
 //Singleton using dart factory
 class Singleton {
   // static variable
