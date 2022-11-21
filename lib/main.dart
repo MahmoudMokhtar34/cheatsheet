@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
 
 import 'package:cheatsheet/myLibrary.dart';
@@ -163,6 +164,9 @@ which may or may not be true.""";
 // prints I’ll\nbe\nback!
 
 //Control Flow: Conditionals
+//when one of the if else if sequence is true it doesn't check the rest of them
+// even if it will be true
+//if you want all of them to be checked use separate if(s) for each check
   var animal = 'fox';
   if (animal == 'cat' || animal == 'dog') {
     print('Animal is a house pet.');
@@ -667,6 +671,9 @@ IntFunction func2(int x) {
 }
 
 //static in class see line 79
+//static members called by the class name itself
+//non static members are called instance members (called by the instance and
+//can't be called by the class)
 class StaticMembers {
   static int c = 0; //static field (called via class name only)
   static int _c =
@@ -726,6 +733,8 @@ final month = Month.august;
 enum Semester { fall, spring, summer }
 
 //Classes and Objects
+//classes used to (group methods and vars, create instances, inheritance ,
+//storing multi data items(like a map with multi keys and values))
 class House {
   //public field or property
   int nrOfWalls;
@@ -735,6 +744,11 @@ class House {
   //called using the class name only & not accessible by its objects
   static int nrOfObjectsCreated = 0;
   //the : is used for initialization and called initializer
+  //the initialization (assigning values) is done before executing the
+  //constructor body
+  //  Anything that is placed on the right hand side of the colon (:) has no
+  // access to this.
+  //https://medium.flutterdevs.com/exploring-dart-constructors-345398a0e4c5
   // i.e Constructor with initializer list
   House(int nw, String wt)
       : nrOfWalls = nw, //initializer list start
@@ -998,19 +1012,61 @@ abstract class InhConcImpAbs extends ConcClass implements AbsClass {
 
 //TODO overriding the Object class toString method and Operator == and any
 //other operator
+//TODO 1 test your code in here
+void test() {
+  //write your implementation for the lesson and
+  //call it with in the main
+}
+//TODO composition and its relation to flutter
+//the class has an object of another class in its fields (has-a relationship)
+//in inheritance (is-a relationship)
+//https://dart.academy/inheritance-polymorphism-and-composition-in-dart-and-flutter/
 
-//TODO composition and its relation to fluter
 //TODO factory constructors :
 //return an instance of the class or of child class(sub class)
 //implement a body that can,t be done in the normal constructor body
+//factory constructor can be used
+// to create instances of subclasses (for example depending on the passed parameter
+// to return a cached instance instead of a new one
+// to prepare calculated values to forward them as parameters to a normal
+//constructor so that final fields can be initialized with them. This is often
+//used to work around limitations of what can be done in an initializer list
+//of a normal constructor (like error handling).
+//https://medium.flutterdevs.com/exploring-dart-constructors-345398a0e4c5
+//extensions adding functionality to existing class either yours or other's
+//(imported packages, builtin data types) with out modifying their original code
+//eg adding a method to get the first letter to the built in String data type
+extension First on String {
+  String firstLetter() {
+    return this[0];
+  }
+}
+
 //TODO const constructor inhance performance and hve the same hash code
 //TODO polymorphism (overriding method)
 //TODO  encapsulation private fields ==> _varName
 //TODO, generics, copyWith() method, exceptions
+// generics e.g
+//instead of making a class for each item pair type compination
+class PairOfThings<A, B> {
+  A itemA;
+  B itemB;
+  PairOfThings({
+    required this.itemA,
+    required this.itemB,
+  });
+}
+
+//TODO models for data saving
+// (creating our own types to store our collection of data)
+//TODO SCRCPY mirroring you device on desktop
+//TODO FIGMA design tool
 //TODO ternary ooperator ? : ;(i.e if else short syntax)
 //TODO Singelton
-//TODO streams https://www.youtube.com/watch?v=53jIxLiCv2E
+//TODO streams sync* and async* and yield
+//https://www.youtube.com/watch?v=53jIxLiCv2E
 //TODO learn Git https://www.youtube.com/watch?v=8JJ101D3knE
+//TODO https://technologychannel.org/post/flutter-roadmap-2023/
 //Singleton using dart factory
 class Singleton {
   // static variable
