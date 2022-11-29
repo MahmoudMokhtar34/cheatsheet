@@ -988,8 +988,35 @@ abstract class InhConcImpAbs extends ConcClass implements AbsClass {
 //e.g.
 //class Imp extends MultiImplementation{} / require override all
 //class InhImp extends InhConcImpAbs{} //require override AbsClass members only
+//TODO in function definition () you are specifying what types of data and how many
+//can be passed, and in the {} body you decide what will be done with them
+//e.g void myFunc(MyType type){ type.method; } MyType is not created nor
+//provided here we just set the rules for this function and how will it work
+//when it is called either by us or others e.g flutter (n.b flutter already
+// defined the method signature that we wil override in our code(e.g build method))
+
+//and in case of anonymous call back function as a parameter in the calling
+//function we also provide the function definition which its definition rules
+//are also already set by the calling function definition
+
+//and the function parameter will be created and provided when it is called
+//(executed) e.g buider : (BuildContext context){}
+
+//اربط المواضيع دي مع lexical scope , generics, anonymous object , anonymous function , callback function
+
+//Question : how to differentiate between context argument (e.g .of(context)) and
+//(context){} ?
+//Answer the curly braces {} if found it means that you are defining a method so
+//a new different context object will be created for the widgets inside this
+//method (lexical scoping) and it is abbreviation for (BuildContext context) and
+//if you wrote the long one it will be accepted by the compiler
+//builder: argument is a build method (anonymous one) same as statelessWidget.build
+//and state.build
 
 //TODO future async await
+// https://www.youtube.com/watch?v=OTS-ap9_aXc&list=PLjxrf2q8roU2HdJQDjJzOeO6J3FoFLWr2&index=15
+// https://www.youtube.com/watch?v=SmTCmDMi4BY&list=PLjxrf2q8roU2HdJQDjJzOeO6J3FoFLWr2&index=17
+// https://www.youtube.com/watch?v=SmTCmDMi4BY&list=PLjxrf2q8roU2HdJQDjJzOeO6J3FoFLWr2&index=17
 // (عملية شوي الفراخ في المطعم بتاخد وقت ومش معقول اني اوقف الدنيا لغاية ما الفرخة تخلص)
 //Asynchronous function is a function that don't stop execution of the rest of
 // the code so we can work while it executes its code and it gives us
@@ -1056,6 +1083,12 @@ class PairOfThings<A, B> {
     required this.itemB,
   });
 }
+//TODO عمل مشروع شبيه بفلاتر وشرح كيف يعمل وشرح المفاهيم من interface abstract
+//composition context .copyOF .of(context) ThemeData
+//TODO abstract فكرة مجردة او مجرد الفكرة بدون تفاصيل
+//TODO interface سطح بيني a layer that you providee to others to define rules
+//on how to use your code and to separate and protect your code from alteration
+// by other users ulg
 
 //TODO models for data saving
 // (creating our own types to store our collection of data)
@@ -1063,10 +1096,16 @@ class PairOfThings<A, B> {
 //TODO FIGMA design tool
 //TODO ternary ooperator ? : ;(i.e if else short syntax)
 //TODO Singelton
-//TODO streams sync* and async* and yield
+//TODO streams & GENERATORS  sync* and async* and yield .map & .where
+//https://www.youtube.com/watch?v=nQBpOIHE4eE&list=PLjxrf2q8roU2HdJQDjJzOeO6J3FoFLWr2&index=16
 //https://www.youtube.com/watch?v=53jIxLiCv2E
 //TODO learn Git https://www.youtube.com/watch?v=8JJ101D3knE
 //TODO https://technologychannel.org/post/flutter-roadmap-2023/
+//
+
+//TODO شرح محمد شوشان للاطلاع على افكار لعمل الكورس
+//https://www.youtube.com/playlist?list=PLnzqK5HvcpwQSrjaK2zpggw2uhf4VrLtI
+
 //Singleton using dart factory
 class Singleton {
   // static variable
