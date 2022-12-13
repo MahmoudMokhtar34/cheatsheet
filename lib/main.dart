@@ -320,7 +320,10 @@ which may or may not be true.""";
   multiply2(14, 3); // 42
 
 //generic function (work on any data type)
-  A genericFunc<A, T>(A x, T y, A Function(A, T) applyTo) {
+//use <> to define your types and number of them including the type of data that
+//will be returned
+//you can restrict the type to  a class an its subtypes using extend
+  C genericFunc<A extends num, T, C>(A x, T y, C Function(A, T) applyTo) {
     return applyTo(x, y);
   }
 
@@ -915,6 +918,12 @@ implements: accepts one or more concrete or abstract class and forces overriding
      and doesn't require implemented class constructor to be initialized
      i.e. as implements keyword implies it extracts and utilize its content of 
      methods and fields without using the class it self
+TODO implements vs with : try it with mixins and abstract and concrete
+ with used for mixins, abstracts and classes without a constructor and not 
+ become subtype of it
+ implements is subtype and inherit the implemented one //constructor absent present ??
+
+ TODO test this theory in inheritance super constructor called only to initialize its fields
 */
 abstract class AbsClass {
   abstract int absVar; //abstract field (makes abstract setter & getter methods)
@@ -984,6 +993,12 @@ abstract class InhConcImpAbs extends ConcClass implements AbsClass {
 //no override required here but overriding all members (of the implemented class
 // only) will be required in the classes that inherit or implement this one
 }
+
+//TODO mixins and on and  with //classes are type of their mixins
+//with enables us to add the capabilities of another class/es or mixin/s to your
+// own class, without inheriting from those classes. (mixins can't be extended)
+
+//on restricts the use of mixin on a defined type and its subtypes
 
 //e.g.
 //class Imp extends MultiImplementation{} / require override all
@@ -1069,6 +1084,8 @@ extension First on String {
   }
 }
 
+//TODO hashmaps and equality
+//https://www.youtube.com/watch?v=DCKaFaU4jdk&list=PLjxrf2q8roU1fRV40Ec8200rX6OuQkmnl&index=2
 //TODO const constructor inhance performance and hve the same hash code
 //TODO polymorphism (overriding method)
 //TODO  encapsulation private fields ==> _varName
